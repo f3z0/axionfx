@@ -104,13 +104,30 @@ define(['particlesystem/util'], function(util) {
 				active: true,
 				duration: Infinity,
 				splineAnchorPts: [
-					{x: 100, y: 100},
-					{x: 50, y: 200},
-					{x: 280, y: 250},
-					{x: 100, y: 280},
-					{x: 150, y: 280},
-					{x: 200, y: 280},
-					{x: 250, y: 280}
+					{
+					            "x": "149",
+					            "y": "28"
+					        },
+					        {
+					            "x": "262",
+					            "y": "250"
+					        },
+					        {
+					            "x": "196",
+					            "y": "153"
+					        },
+					        {
+					            "x": "143",
+					            "y": "124"
+					        },
+					        {
+					            "x": "94",
+					            "y": "155"
+					        },
+					        {
+					            "x": "23.3",
+					            "y": "248"
+					        }
 				],
 				splineIsPath: true,
 				splineClockwise: true,
@@ -149,13 +166,10 @@ define(['particlesystem/util'], function(util) {
 				active: true,
 				duration: Infinity,
 				splineAnchorPts: [
-					{x: 0, y: 0},
-					{x: 0, y: 0},
-					{x: 0, y: 0},
-					{x: 0, y: 0},
-					{x: 0, y: 0},
-					{x: 0, y: 0},
-					{x: 0, y: 0}
+					{x: 100, y: 40},
+					{x: 100, y: 80},
+					{x: 100, y: 100},
+					{x: 100, y: 120}
 				],
 				splineSpeed: 20.0,
 				splineRelForceOn: true

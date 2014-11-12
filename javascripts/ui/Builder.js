@@ -27,6 +27,8 @@ function(predefinedSystems, fullConfig, propertyMap, Parser) {
 
 			this._addPlayButton(gui);
 			this._addResetButton(gui);
+			this._systempicker(gui);
+			this._addCanvasSize(gui);
 
 			var useFolders = this.uiConfig.length > 1;
 
@@ -75,6 +77,19 @@ function(predefinedSystems, fullConfig, propertyMap, Parser) {
 			for (var i = 0; i < gui.__controllers.length; ++i) {
 				gui.__controllers[i].updateDisplay();
 			}
+		},
+
+		_addCanvasSize: function(gui) {
+			var w = window,
+			    d = document,
+			    e = d.documentElement,
+			    g = d.getElementsByTagName('body')[0],
+			    x = w.innerWidth || e.clientWidth || g.clientWidth,
+			    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
+
+			var folder = gui.addFolder('Canvas');
+			folder.add(this.controller, 'canvasWidth').min(10).max(Math.min(x,y));
+			folder.add(this.controller, 'canvasHeight').min(10).max(Math.min(x,y));
 		},
 
 		_addPlayButton: function(gui) {
@@ -172,6 +187,7 @@ function(predefinedSystems, fullConfig, propertyMap, Parser) {
 			var me = this;
 			c.onChange(function() {
 				me._updateDisplays(me.rootGui);
+				me.controller.flashConfig();
 			});
 		},
 

@@ -158,6 +158,7 @@ function(predefinedSystems, Emitter, Renderer, util, Builder, wtf, propertyMap) 
 		}, 
 		set: function(width) {
 			window.flashWidth = width;
+			document.getElementById('flashemitter-bg').style.width = (window.flashWidth*window.flashZoom) + 'px';
 			document.getElementById('flashemitter').width = window.flashWidth*window.flashZoom;
 			document.getElementById('flashemitter').externSize(window.flashWidth, window.flashHeight);
 			clearTimeout(to);
@@ -180,16 +181,19 @@ function(predefinedSystems, Emitter, Renderer, util, Builder, wtf, propertyMap) 
 		}, 
 		set: function(height) {
 			window.flashHeight = height;
+			document.getElementById('flashemitter-bg').style.height = (window.flashHeight*window.flashZoom) + 'px';
 			document.getElementById('flashemitter').height = window.flashHeight*window.flashZoom;
 			document.getElementById('flashemitter').externSize(window.flashWidth, window.flashHeight);
 			clearTimeout(to);
 			var that = this;
 			to = setTimeout(function(){
 				var systemConfig = {};
-			for(var k in propertyMap){
-				if(typeof that.emitter[k] !== 'undefined' && ignorePropList.indexOf(k) === -1) systemConfig[k] = that.emitter[k];
-			}			document.getElementById('flashemitter').config(JSON.stringify(systemConfig));
-document.getElementById('flashemitter').updateSpline()}, 250, document.getElementById('flashemitter'));
+				for(var k in propertyMap){
+					if(typeof that.emitter[k] !== 'undefined' && ignorePropList.indexOf(k) === -1) systemConfig[k] = that.emitter[k];
+				}
+				document.getElementById('flashemitter').config(JSON.stringify(systemConfig));
+				document.getElementById('flashemitter').updateSpline();
+			}, 250);
 			adjustSize();
 		}
 	});
