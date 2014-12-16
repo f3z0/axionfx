@@ -1,344 +1,28 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>AxionFX Particles</title>
-	<link rel="stylesheet" href="pjs.css" />
-	<link rel="stylesheet" href="datgui.css" />
+	<title>AxionFX Flash/HTML5 Particle Systemj</title>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="css/datgui.css" />
 	<link href='http://fonts.googleapis.com/css?family=Orbitron:700' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="http://code.jquery.com/ui/1.11.2/themes/vader/jquery-ui.css">
-	<script src='javascripts/swfobj/swfobject.js'></script>
-	 <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
-	 <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-	 <script>
-
-	 function splineChanged(splineData){
-	 	console.log('sc')
-	 	window.updateSplineJS(JSON.parse(splineData));
-	 	window.dispatchEvent(new Event('splineChange'));
-	 }
-
-	 window.flashZoom = 1.0;
-	   $(function() {
-	   	
-
-	     $( "#slider-vertical" ).slider({
-	       orientation: "vertical",
-	       range: "min",
-	       min: 1,
-	       max: 4,
-	       value: 1,
-	       step: 0.25,
-	       slide: function( event, ui ) {
-	       	window.flashZoom = parseFloat(ui.value);
-	       	$('#zoom-level span').html(window.flashZoom);
-	       	document.getElementById('flashemitter').externZoom(flashZoom);
-	       	document.getElementById('flashemitter').width = flashZoom*parseInt(window.flashWidth);
-	       	document.getElementById('flashemitter').height = flashZoom*parseInt(window.flashHeight);
-	       	document.getElementById('flashemitter-bg').style.width  = document.getElementById('flashemitter').width + 'px';
-	       	document.getElementById('flashemitter-bg').style.height  = document.getElementById('flashemitter').height + 'px';
-
-	       	
-	       	document.getElementById('captureevents').style.height  = document.getElementById('flashemitter').height + 'px';
-	       	document.getElementById('captureevents').style.width  = document.getElementById('flashemitter').width + 'px';
-	       	
-
-
-	       	adjustSize();
-	       }
-	     });
-	   });
-	   </script>
-	<style>
-	html {
-		height: 100%;
-	}
-		body {
-			margin: 0px;
-			background-color: #1b1b1b;
-			height: 100%;
-
-		}		
-
-		#guiContainer {
-			float: left;
-
-		}
-
-		#canvasContainer {
-			float: left;
-			position: relative;
-			display: none;
-		}
-
-		#flashContent {
-			float: left;
-			position: relative;
-			background-color: #242424;
-			box-shadow: 0px 2px 2px 2px rgba(0,0,0,0.3) inset;
-			overflow: scroll;
-
-		}
-
-		#statsContainer {
-			float: left;
-		}
-		#side, #side2 {
-			color: #695e5e;
-			position: absolute;
-			top: 500px;
-			left: 0px;
-			font-size: 100px;
-			font-family: 'Orbitron', sans-serif;
-			-webkit-transform: rotate(-90deg);
-
-			-moz-transform: rotate(-90deg);
-
-			-ms-transform: rotate(-90deg);
-
-			-o-transform: rotate(-90deg);
-
-			filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-
-			transform-origin: 0% 0%;
-
-			text-shadow: 5px 5px #000;
-
-			opacity: 0.50;
-			
-			filter: alpha(opacity=50); /* For IE8 and earlier */
-
-
-
-		}
-		div.dg.ac {
-			float: right;			
-
-		}
-
-		#side2 {
-			height: 50px;
-			overflow: hidden;
-			color: #60afe6;
-			opacity: 0.15;
-			
-			filter: alpha(opacity=15); /* For IE8 and earlier */
-
-			text-shadow: none;
-		}
-
-		a, a:visited, a:active {
-			color: #bababa;
-		}
-
-		a:hover {
-			color: #FFF;
-		}
-
-		#license {
-			position: absolute;
-			right: 0px;
-			bottom: 6px;
-			width: 370px;
-			text-align: center;
-			font-family: arial;
-			color: #767676;
-			font-size: 11px;
-		}
-
-		#right-info {
-			position: absolute;
-			right: 0px;
-			bottom: 50px;
-			height: 440px;
-			width: 370px;
-			
-		}
-
-		#github {
-			display: inline-block;
-			background-image: url("http://assets-cdn.github.com/images/modules/logos_page/Octocat.png");
-			background-size: cover;
-			background-repeat: no-repeat;
-			width: 200px;
-			height:166px;
-			margin-left: 65px;
-			z-index: 0;
-			opacity: 0.80;	
-			margin-top: 50px;
-			filter: alpha(opacity=80); /* For IE8 and earlier */
-		}
-
-		#github:hover {
-			opacity: 1.0;	
-			filter: alpha(opacity=100); /* For IE8 and earlier */
-		}
-
-		#desc {
-			float: right;
-			font-size: 12px;
-			text-align: justify;
-			padding: 20px;
-			font-family: arial;
-			color: #767676;
-			font-size: 11px;
-			width: 330px;
-		}
-
-		#desc h3 {
-			color: #d5d5d5;
-			margin-bottom: 4px;
-		}
-
-		#main {
-			position: relative;
-			min-height: 700px;
-			height: 100%;
-		}
-
-		#dg-save {
-			height: 400px;
-		}
-
-		#dg-new-constructor {
-			height: 340px !important;
-
-		}
-
-		#scroll {
-			position: absolute;
-			top: 0px;
-			right: 0px;
-			width: 370px;
-			float: right;
-			background-color: #1b1b1b;
-			height: 400px;
-			z-index: 10;
-			overflow-x: hidden;
-			overflow-y: scroll;
-		}
-
-		#flashemitter {
-			box-shadow: 1px 2px 5px 3px rgba(0,0,0,0.5);
-			position: absolute;
-			top: 0px;
-			left: 0px;
-			pointer-events: 'none';
-
-			
-		}
-
-		#flashemitter-bg {
-			display: inline-block;
-			background-size: contain;
-			background-repeat: no-repeat;
-			background-position: center;
-			background-color: #000;
-			position: relative;
-			width: 300px;
-			height: 300px;
-		}
-
-		#captureevents {
-			width: 300px;
-			height: 300px;
-			display: block;
-			position: absolute;
-			top: 0px;
-			left: 0px;
-		}
-
-		#slider-vertical {
-			position: absolute;
-			right: 35px;
-			bottom: 50px;
-		}
-
-		#zoom-level {
-			position: absolute;
-			bottom: 14px;
-			right: 16px;
-			color: #767676;
-			font-family: arial;
-			font-size: 12px;
-			text-shadow: 1px 1px #000;
-		}
-
-		#flashemitter-iframe {
-			width: 100%;
-			height: 100%;
-		}
-		
-	</style>
-	<script>
-	$(function(){
-		var dragTimer;
-		$("#captureevents").hide();
-		$(document).on('dragover', function(e) {
-		    var dt = e.originalEvent.dataTransfer;
-		    if(dt.types != null && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('application/x-moz-file'))) {
-		        $("#captureevents").show();
-		        window.clearTimeout(dragTimer);
-		    }
-		});
-		$(document).on('dragleave', function(e) {
-		    dragTimer = window.setTimeout(function() {
-		        $("#captureevents").hide();
-		    }, 25);
-		});
-
-		var holder = document.getElementById('captureevents');
-		var bgdiv = document.getElementById('flashemitter-bg');
-
-		if (typeof window.FileReader === 'undefined') {
-		  alert('File reader unavailable, please upgrade browser.')
-		} 
-		 
-		holder.addEventListener("dragover", function(event) {
-		  event.preventDefault();
-		}, true);
-		holder.addEventListener("dragend", function(event) {
-		  event.preventDefault();
-		  // Ready to do something with the dropped object
-		}, true);
-
-		holder.addEventListener("drop", function(event) {
-		  event.preventDefault();
-		  $("#captureevents").hide();
-		  var file = event.dataTransfer.files[0]
-		  var objectURL = window.URL.createObjectURL(file);
-		  if(file.type === 'application/x-shockwave-flash') {
-		  	var i = document.createElement('iframe')
-		  	i.src = objectURL;
-		  	i.id = 'flashemitter-iframe';
-		  	i.width = $('#flashemitter').width();
-		  	i.height =  $('#flashemitter').height();
-		  	i.style.pointerEvents = 'none';
-		  	bgdiv.appendChild(i)
-
-		  } else {
-		  	console.log('objectURL '  + objectURL)
-			bgdiv.style.backgroundImage = ' url(' + objectURL + ')';
-			if(document.getElementById('flashemitter-iframe')) bgdiv.removeChild(document.getElementById('flashemitter-iframe'));
-
-		  }
-		});
-
-	})
-	
-	</script>
+	<link rel="stylesheet" href="javascripts/lib/bootstrap-tokenfield/css/tokenfield-typeahead.min.css" type='text/css'>
+	<link rel="stylesheet" href="javascripts/lib/bootstrap-tokenfield/css/bootstrap-tokenfield.min.css" type='text/css'>
+	<link rel="stylesheet" href="css/style.css" />
+	<link rel="icon" href="favicon.png" type="image/png">
+	<script src='javascripts/lib/swfobj/swfobject.js'></script>
+	<script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="http://code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+	<script src="javascripts/lib/bootstrap-tokenfield/bootstrap-tokenfield.min.js"></script>
 </head>
 <body>
 	<div id='main'>
 	<div id='side'>AxionFX</div>
 	<div id='side2'>AxionFX</div>
-
-	<div id="canvasContainer"></div>
 	<div id="flashContent">
-
+		<div id="canvasContainer"></div>
 		<div id='flashemitter-bg'>
-			<object type="application/x-shockwave-flash" data="emitter.swf" width="300" height="300" id="flashemitter" style="">
+			<object type="application/x-shockwave-flash" data="emitter.swf" width="500" height="500" id="flashemitter" style="">
 				<param name="movie" value="emitter.swf" />
 				<param name="quality" value="high" />
 				<param name="play" value="true" />
@@ -358,53 +42,65 @@
 		 <div id='zoom-level'>Zoom: <span>1.0</span></div>
 		<div id="slider-vertical" style="height:200px;"></div>
 	</div>
-
 	<div id='scroll'>
-	<div id='guiContainer'></div>
+		<div id='tabs'>
+			<ul>
+				<li><a href="#canvas-tab-container">System</a></li>
+				<li><a href="#emitters-tab-container">Emitters</a></li>
+				<li><a href="#bodies-tab-container">Bodies</a></li>
+				<li><a href="#paths-tab-container">Paths</a></li>
+			  </ul>
+			  <div id='canvas-tab-container'>
+			  	<div id='guiContainer-canvas'></div>
+			  </div>
+			<div id='emitters-tab-container'>
+				<div id='emitters-tab' class='accordion'>
+					<h3 id='heading0' data-idx='0'>Emitter 1</h3>
+					<div id='gui-container-emitters-0'></div>
+				</div>
+				<button id='addEmitter'>Create New Emitter</button>
+			</div>
+			<div id='bodies-tab-container'>
+				<div id='bodies-tab' class='accordion'>
 
-	<div id='desc'>
-		<h3>AxionFX Features</h3>
-		AxionFX is an open source, light weight, cross platform, 2D particle engine + authoring tool for HTML5/Flash/Flex/Air games. It is offered non-commercially and is community supported under the <a href='http://www.apache.org/licenses/LICENSE-2.0.html'>Apache 2.0</a> license for free use / distribution. It is a derivitive of the <a href='https://github.com/city41/particle.js'>Particle.js</a> project with some enhancements ( emitter animation via configurable <a href='http://en.wikipedia.org/wiki/Centripetal_Catmull%E2%80%93Rom_spline'>Catmull Rom</a> splines and an AS3 port for Flash/Flex/Air platforms). Additionaly leverages Particle.js' intermediate <a href='http://www.cocos2d-swift.org/'>Cocos2D</a> layer so that it can load and run existing <a href='https://www.makegameswith.us/docs/#!/cocos2d/1.2/particle-effects'>Cocos2D particle systems</a> providing more prebaked effects and a potential path to bring your particles to native iOS with <a href='http://www.cocos2d-swift.org/'>Cocos2D</a>.
-		<a href='https://github.com/coolblade/axionfx'><div id='github'></div></a>
+					<h3 id='heading0' data-idx='0'>Body 1</h3>
+					<div id='gui-container-bodies-0'></div>
+				</div>
+				<button id='addBody'>Create New Body</button>
 
+			</div>
+			<div id='paths-tab-container' >
+				<div id='paths-tab' class='accordion'>
+					<h3 id='heading0' data-idx='0'>Path 1</h3>
+					<div id='gui-container-paths-0'></div>
+				</div>
+				<button id='addPath'>Create New Path</button>
+			</div>
+		</div>
+		<div id='guiContainer-controls'></div>
+		<div id='desc'>
+			<h3>AxionFX</h3>
+			<span id='pronounce' >ˈakʃ(ə)n ɪˈfɛkts/</span><br/>
+			an open source, light weight, cross platform, 2D particle engine + authoring tool for HTML5/Flash/Flex/Air. It is offered non-commercially and is community supported under the <a href='http://www.apache.org/licenses/LICENSE-2.0.html'>Apache 2.0</a> license for free use / distribution. Features include: real-time physics configuration, appearance configuration, emit along configurable curved splines, add gravitational bodies for particle attraction/repulsion, attract/repulse along configurable cuved splines, drag and drop any image or swf into the visual editor for easy aid/placeholder and easily export to HTML5 or Flash. It's namesake is the hypothetical <a href='http://en.wikipedia.org/wiki/Axion'>Axion particle</a>, theoretical subatomic composition of dark matter.<br/>  
+			<a href='https://github.com/coolblade/axionfx'><div id='github'></div></a>
+
+		</div>
 	</div>
-	</div>
-	<div id='right-info'>
-		
-	</div>
+	<div id='right-info'></div>
 	<div id='license'>
 		All source and materials &copy; Copyright 2014, Gregory Ray, except where otherwise stated. Provided under the <a href='http://www.apache.org/licenses/LICENSE-2.0'>Apache 2.0 License</a>.
 	</div>
-	<script data-main="javascripts/main.js" type="text/javascript" src="javascripts/third/require.js"></script>
-
+	<div id="dialog-add-emitter" title="Add Emitter">
+	  <label>Starting Template:</label>
+	  <select id='template'></select>
+	</div>
+	<div id="dialog-load-config" title="Load Config">
+	  <label>Config JSON:</label><br/>
+	  <textAREA id='config-json' rows="24" cols="58">{}</textAREA>
+	</div>
+	<script data-main="javascripts/main.js" type="text/javascript" src="javascripts/lib/third/require.js"></script>
+	<script type="text/javascript" src="javascripts/index.js"></script>
 	<script type='text/javascript'>
-	function adjustSize(){
-		var w = window,
-		    d = document,
-		    e = d.documentElement,
-		    g = d.getElementsByTagName('body')[0],
-		    x = w.innerWidth || e.clientWidth || g.clientWidth,
-		    y = w.innerHeight|| e.clientHeight|| g.clientHeight;
-		    y = Math.max(700, y);
-		    var sideLen = Math.min(x-370, y);
-
-		document.getElementById('flashContent').style.height=sideLen+'px';
-		document.getElementById('flashContent').style.width=sideLen+'px';
-		document.getElementById('flashContent').style.marginLeft=Math.max(0,x-sideLen-370)+'px';
-
-		document.getElementById('side').style.left=Math.max(0,x-sideLen-370)-120+'px';
-		document.getElementById('side2').style.left=Math.max(0,x-sideLen-370)-120+'px';
-
-		document.getElementById('flashemitter-bg').style.marginTop=((sideLen-document.getElementById('flashemitter').height)/2) + 'px';
-		document.getElementById('flashemitter-bg').style.marginLeft=((sideLen-document.getElementById('flashemitter').width)/2) + 'px';
-
-		document.getElementById('captureevents').style.left = document.getElementById('flashemitter-bg').style.marginLeft;
-		document.getElementById('captureevents').style.top = document.getElementById('flashemitter-bg').style.marginTop;
-
-		$('#scroll').height($(window).height()-40)
-
-	}
-	
 	window.onresize = function(event) {
 		adjustSize();
 	};
