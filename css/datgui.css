@@ -259,7 +259,7 @@
       text-shadow: 0 1px 0 #b0a58f;
       box-shadow: 0 -1px 0 #b0a58f;
       cursor: pointer; }
-      .dg li.save-row .button.gears {
+      .dg li.has-savee-row .button.gears {
 				padding-left: 8px;
         background: #c5bdad url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAANCAYAAAB/9ZQ7AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQJJREFUeNpiYKAU/P//PwGIC/ApCABiBSAW+I8AClAcgKxQ4T9hoMAEUrxx2QSGN6+egDX+/vWT4e7N82AMYoPAx/evwWoYoSYbACX2s7KxCxzcsezDh3evFoDEBYTEEqycggWAzA9AuUSQQgeYPa9fPv6/YWm/Acx5IPb7ty/fw+QZblw67vDs8R0YHyQhgObx+yAJkBqmG5dPPDh1aPOGR/eugW0G4vlIoTIfyFcA+QekhhHJhPdQxbiAIguMBTQZrPD7108M6roWYDFQiIAAv6Aow/1bFwXgis+f2LUAynwoIaNcz8XNx3Dl7MEJUDGQpx9gtQ8YCueB+D26OECAAQDadt7e46D42QAAAABJRU5ErkJggg==) 2px 1px no-repeat;
         height: 7px;
@@ -285,10 +285,10 @@
     .point-list-item {
       border-left: 3px solid #db6636; }
       .dg .cr.number input[type=text], .dg .cr.point-list-item .property-name {
-        width:35%;
+   /*     width:35% !important;*/
       }
       .dg .cr.number input[type=text], .dg .cr.point-list-item label, .dg .cr.number input[type=text], .dg .cr.point-list-item .c {
-        margin-right: 5px;
+     /*   margin-right: 5px;*/
       }
     .dg .cr.number input[type=text], .dg .cr.point-list-item  input[type=text] {
       color: #2fa1d6; }

@@ -66,7 +66,6 @@
 
         public function System(def:Object) {
             if(!texture && def.hasOwnProperty('renderMode')) {
-                trace(def['textureSource'] + ' ' + def['systemName'] )
                 textureSource = def['textureSource'] || _textureSource;
             } 
             if(def.hasOwnProperty('systemName')) systemName = def['systemName'];

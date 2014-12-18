@@ -92,15 +92,20 @@ function(SystemsManager, Parser) {
 			$($(c.domElement).parent().parent().find('.c')).css('width', '100%') 
 
 			var _this = this;
-			var autoTextSource = this.controller.getEmitterNames();
+			var autoTextSource = this.controller.getEmitterNames().concat(_this.controller.getBodyNames());
 
 			function refreshTokenSource() {
-				autoTextSource = _this.controller.getEmitterNames();
+				autoTextSource = _this.controller.getEmitterNames().concat(_this.controller.getBodyNames());
 				$(actsOnInput).data('bs.tokenfield').$input.autocomplete({source: autoTextSource});
 			}
 
 			$( window ).on( "EmitterAdded", refreshTokenSource);
 			$( window ).on( "BodyAdded", refreshTokenSource);
+
+			c.onChange(function() {
+				console.log('ff')
+				$(actsOnInput).val(this.particleSystem.actsOnStr.join(','));
+			});
 
 			$(actsOnInput).tokenfield({
 			  autocomplete: {
@@ -110,7 +115,7 @@ function(SystemsManager, Parser) {
 			  showAutocompleteOnFocus: true
 			}).on('tokenfield:createtoken', function (e) {
 			    var data = e.attrs.value.split('|')[0];
-			    autoTextSource = _this.controller.getEmitterNames();
+			    autoTextSource = _this.controller.getEmitterNames().concat(_this.controller.getBodyNames());
 			    $(actsOnInput).data('bs.tokenfield').$input.autocomplete({source: autoTextSource});
 
 			    return ( autoTextSource.indexOf(data) > -1);
@@ -121,7 +126,7 @@ function(SystemsManager, Parser) {
 
 			  	_this.particleSystem.actsOn = arr;
 
-			  	autoTextSource = _this.controller.getEmitterNames();
+			  	autoTextSource = _this.controller.getEmitterNames().concat(_this.controller.getBodyNames());
 			  	$(actsOnInput).data('bs.tokenfield').$input.autocomplete({source: autoTextSource});
 
 
@@ -138,7 +143,7 @@ function(SystemsManager, Parser) {
 
 			  	_this.particleSystem.actsOn = arr;
 
-			  	autoTextSource = _this.controller.getEmitterNames();
+			  	autoTextSource = _this.controller.getEmitterNames().concat(_this.controller.getBodyNames());
 			  	$(actsOnInput).data('bs.tokenfield').$input.autocomplete({source: autoTextSource});
 
 			  	_this.controller.flashConfig(true);
@@ -155,14 +160,14 @@ function(SystemsManager, Parser) {
 
 		_posvector: function(gui, property) {
 			var folder = gui.addFolder(property);
-			folder.add(this.particleSystem[property], 'x').min(0).max(this.maxWidth).listen();
-			folder.add(this.particleSystem[property], 'y').min(0).max(this.maxHeight).listen();
+			folder.add(this.particleSystem[property], 'x').min(0).max(this.maxWidth).onChange(function(){_this.controller.flashConfig();});
+			folder.add(this.particleSystem[property], 'y').min(0).max(this.maxHeight).onChange(function(){_this.controller.flashConfig();});
 		},
 
 		_vector: function(gui, property) {
 			var folder = gui.addFolder(property);
-			folder.add(this.particleSystem[property], 'x').min(-500).max(500);
-			folder.add(this.particleSystem[property], 'y').min(-500).max(500);
+			folder.add(this.particleSystem[property], 'x').min(-500).max(500).onChange(function(){_this.controller.flashConfig();});
+			folder.add(this.particleSystem[property], 'y').min(-500).max(500).onChange(function(){_this.controller.flashConfig();});
 		},
 
 		_renderModePicker: function(gui, property) {

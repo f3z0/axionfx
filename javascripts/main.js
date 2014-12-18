@@ -158,7 +158,6 @@ function(SystemsManager, System, Emitter, Body, Path, Renderer, Util, Builder, e
 			paths.length = 0;
 			 
 			var system = JSON.parse(config||"{}");
-			console.log(system)
 			if(!system.emitters) return;
 			for(var x = 0; x < system.emitters.length; x++){
 				SystemsManager.getInstance().addSystem(system.emitters[x].systemName, 'EMITTER', system.emitters[x]);	
@@ -208,19 +207,23 @@ function(SystemsManager, System, Emitter, Body, Path, Renderer, Util, Builder, e
 			}
 		},
 		addEmitter: function(template) {
+			var systemName = guid();
+
 			var divId = 'gui-container-emitters-' + (emitters.length);
 			var heading = document.createElement('h3');
 			heading.setAttribute('id', 'heading'+(emitters.length))
 
+			var def = Util.deepClone(SystemsManager.getInstance().getSystem(template), ['texture']);
+			def.systemName = systemName;
+
 			heading.setAttribute('data-idx', emitters.length)
-			heading.innerHTML = "Emitter " + (emitters.length+1).toString();
+			heading.innerHTML = systemName;
 			document.getElementById('emitters-tab').appendChild(heading);
 			var div = document.createElement('div');
 			div.setAttribute('id', divId);
 
 
-			var def = Util.clone(SystemsManager.getInstance().getSystem(template));
-			def.systemName = guid();
+			
 			def.textureSource = def._textureSource;
 			var emitter = new Emitter(def);
 			emitter.addRenderer(renderer);
@@ -228,18 +231,21 @@ function(SystemsManager, System, Emitter, Body, Path, Renderer, Util, Builder, e
 			emitters.push(emitter);
 			var that = this;
 			function afterInsert(e) {
-				div.removeEventListener("DOMNodeInserted", afterInsert);
-				new Builder(divId, emitter.system, window.flashWidth, window.flashHeight, controller, EmitterConfig, emitterPropertyMap)
-				.add(controller, 'removeEmitter').name('Remove Emitter');
+				setTimeout(function(){
+					div.removeEventListener("DOMNodeInserted", afterInsert);
+					new Builder(divId, emitter.system, window.flashWidth, window.flashHeight, controller, EmitterConfig, emitterPropertyMap)
+					.add(controller, 'removeEmitter').name('Remove Emitter');
 
-				$(document.getElementById('emitters-tab')).accordion( "refresh" );
-				controller.flashConfig(true);
-				$(window).trigger( "EmitterAdded", [ ] );
+					$(document.getElementById('emitters-tab')).accordion( "refresh" );
+					controller.flashConfig(true);
+					$(window).trigger( "EmitterAdded", [ ] );
 
-				$(document.getElementById('emitters-tab')).accordion({
-				  active: emitters.length-1
-				});
-				document.getElementById('flashemitter').setActiveActor(emitters.length-1, 'emitter');
+					$(document.getElementById('emitters-tab')).accordion({
+					  active: emitters.length-1
+					});
+					document.getElementById('flashemitter').setActiveActor(emitters.length-1, 'emitter');
+				},100);
+				
 
 
 			}
@@ -247,74 +253,83 @@ function(SystemsManager, System, Emitter, Body, Path, Renderer, Util, Builder, e
 			div.addEventListener("DOMNodeInserted", afterInsert, false);
 
 			document.getElementById('emitters-tab').appendChild(div);
+
+			return emitter;
 		},
 		addBody: function() {
 			var divId = 'gui-container-bodies-' + (bodies.length);
 			var heading = document.createElement('h3');
+			var systemName = guid();
 			heading.setAttribute('id', 'heading'+(bodies.length))
 
 			heading.setAttribute('data-idx', bodies.length)
-			heading.innerHTML = "Body " + (bodies.length+1).toString();
+			heading.innerHTML = systemName;
 			document.getElementById('bodies-tab').appendChild(heading);
 			var div = document.createElement('div');
 			div.setAttribute('id', divId)
 
-			var body = new Body({systemName: guid(), actsOn: [], pos: {x:10, y: 290}, mass: 50, force: 240});
+			var body = new Body({systemName: systemName, actsOn: [], pos: {x:25, y: 25}, mass: 250, force: 250});
 			body.addRenderer(renderer);
 
 			bodies.push(body);
 			var that = this;
 			function afterInsert(e) {
-				div.removeEventListener("DOMNodeInserted", afterInsert);
-				new Builder(divId, body, window.flashWidth, window.flashHeight, controller, BodyConfig, bodyPropertyMap)
-				.add(controller, 'removeBody').name('Remove Body');
+				setTimeout(function(){
+					div.removeEventListener("DOMNodeInserted", afterInsert);
+					new Builder(divId, body, window.flashWidth, window.flashHeight, controller, BodyConfig, bodyPropertyMap)
+					.add(controller, 'removeBody').name('Remove Body');
 
-				$(document.getElementById('bodies-tab')).accordion( "refresh" );
-				controller.flashConfig(true);
-				$(window).trigger( "BodyAdded", [ ] );
+					$(document.getElementById('bodies-tab')).accordion( "refresh" );
+					controller.flashConfig(true);
+					$(window).trigger( "BodyAdded", [ ] );
 
-				$(document.getElementById('bodies-tab')).accordion({
-				  active: bodies.length-1
-				});
-				document.getElementById('flashemitter').setActiveActor(bodies.length-1, 'body');
+					$(document.getElementById('bodies-tab')).accordion({
+					  active: bodies.length-1
+					});
+					document.getElementById('flashemitter').setActiveActor(bodies.length-1, 'body');
+				}, 100);
 
 			}
 
 			div.addEventListener("DOMNodeInserted", afterInsert, false);
 
 			document.getElementById('bodies-tab').appendChild(div);
+
+			return body;
 		},
 		addPath: function() {
 			var divId = 'gui-container-paths-' + (paths.length);
+			var systemName = guid();
+
 			var heading = document.createElement('h3');
 			heading.setAttribute('id', 'heading'+(paths.length))
 
 			heading.setAttribute('data-idx', paths.length)
-			heading.innerHTML = "Path " + (paths.length+1).toString();
+			heading.innerHTML = systemName;
 			document.getElementById('paths-tab').appendChild(heading);
 			var div = document.createElement('div');
 			div.setAttribute('id', divId)
 
 			var path = new Path({
-				systemName: guid(),
+				systemName: systemName,
 				actsOn: [], 
 				splineAnchorPts: [{
 					"x": 10,
 					"y": 10
 				},
 				{
-					"x": 20,
+					"x": 50,
 					"y": 10
 				},
 				{
-					"x": 20,
-					"y": 20
+					"x": 50,
+					"y": 75
 				},
 				{
 					"x": 10,
-					"y": 20
+					"y": 75
 				}],
-				splineSpeed: 10,
+				splineSpeed: 50,
 				splineIsPath: true,
 				splineClockwise: true,
 				splineRelForceOn: false
@@ -323,23 +338,27 @@ function(SystemsManager, System, Emitter, Body, Path, Renderer, Util, Builder, e
 			paths.push(path);
 			var that = this;
 			function afterInsert(e) {
-				div.removeEventListener("DOMNodeInserted", afterInsert);
-				new Builder(divId, path, window.flashWidth, window.flashHeight, controller, PathConfig, pathPropertyMap)
-				.add(controller, 'removePath').name('Remove Path');
+				setTimeout(function(){
+					div.removeEventListener("DOMNodeInserted", afterInsert);
+					new Builder(divId, path, window.flashWidth, window.flashHeight, controller, PathConfig, pathPropertyMap)
+					.add(controller, 'removePath').name('Remove Path');
 
-				$(document.getElementById('paths-tab')).accordion( "refresh" );
-				controller.flashConfig(true);
-				$(window).trigger( "PathAdded", [ ] );
+					$(document.getElementById('paths-tab')).accordion( "refresh" );
+					controller.flashConfig(true);
+					$(window).trigger( "PathAdded", [ ] );
 
-				$(document.getElementById('paths-tab')).accordion({
-				  active: paths.length-1
-				});
-				document.getElementById('flashemitter').setActiveActor(paths.length-1, 'path');
+					$(document.getElementById('paths-tab')).accordion({
+					  active: paths.length-1
+					});
+					document.getElementById('flashemitter').setActiveActor(paths.length-1, 'path');
+				}, 100);
 
 			}
 
 			div.addEventListener("DOMNodeInserted", afterInsert, false);
 			document.getElementById('paths-tab').appendChild(div);
+
+			return path;
 		},
 		removeEmitter: function(){
 			var idx = parseInt($('#emitters-tab .ui-accordion-header-active:first').attr('data-idx'));	
@@ -501,8 +520,6 @@ function(SystemsManager, System, Emitter, Body, Path, Renderer, Util, Builder, e
 	}
 
 	function launch() {
-
-
 			renderer = new Renderer('canvasContainer', window.flashWidth, window.flashHeight, true);
 			SystemsManager.getInstance().positionSystems({width: window.flashWidth, height: window.flashHeight});
 
@@ -510,64 +527,15 @@ function(SystemsManager, System, Emitter, Body, Path, Renderer, Util, Builder, e
 			bodies = [];
 			paths = [];
 
-			var def = Util.clone(SystemsManager.getInstance().getSystem('rainbowroad'));
-			def.systemName = guid();
-			def.textureSource = def._textureSource;
-			var emitter = new Emitter(def);
-			emitter.addRenderer(renderer);
+			var emitter = controller.addEmitter('rainbowroad');
+			var body = controller.addBody();
+			body.system.pos.x = 100;
+			body.system.pos.y = 100;
 
-			emitters.push(emitter);
-
-			new Builder('gui-container-emitters-0', emitter.system, window.flashWidth, window.flashHeight, controller, EmitterConfig, emitterPropertyMap)
-			.add(controller, 'removeEmitter').name('Remove Emitter');
+			body.system.actsOn.push(emitter.systemName);
+			var path = controller.addPath();
+			path.system.actsOn.push(emitter.systemName);
 			
-			bodies.push(new Body({systemName: guid(), actsOn: [], pos: {x:10, y: 290}, mass: 50, force: 240, startDelay: 0}));
-			bodies[0].addRenderer(renderer);
-			new Builder('gui-container-bodies-0', bodies[0], window.flashWidth, window.flashHeight, controller, BodyConfig, bodyPropertyMap)
-			.add(controller, 'removeBody').name('Remove Body');
-
-			paths.push(new Path({'systemName': guid(), splineAnchorPts: [
-					{
-					            "x": 149,
-					            "y": 28
-					        },
-					        {
-					            "x": 262,
-					            "y": 250
-					        },
-					        {
-					            "x": 196,
-					            "y": 153
-					        },
-					        {
-					            "x": 143,
-					            "y": 124
-					        },
-					        {
-					            "x": 94,
-					            "y": 155
-					        },
-					        {
-					            "x": 23,
-					            "y": 248
-					        }
-				],
-				splineIsPath: true,
-				splineClockwise: true,
-				splineSpeed: 50.0,
-				splineRelForceOn: true,
-				actsOn: []
-			}));
-			paths[0].addRenderer(renderer);
-
-			new Builder('gui-container-paths-0', paths[0], window.flashWidth, window.flashHeight, controller, PathConfig, pathPropertyMap)
-			.add(controller, 'removePath').name('Remove Path');
-
-			var that = this;
-			window.updateSplineJS = function(splineData){
-				emitter.overlay({'splineAnchorPts': splineData});
-			}
-
 			var guiCanvas = new dat.GUI({ resizable: false, width: 331,  autoPlace: false });
 
 			controls._addPlayButton(guiCanvas);
@@ -636,7 +604,6 @@ function(SystemsManager, System, Emitter, Body, Path, Renderer, Util, Builder, e
 
 			ecTO = -1;
 			window.emittersChanged = function(emittersData) {
-				//console.log(emittersData)
 				clearTimeout(ecTO);
 				ecTO = setTimeout(function(){
 					var updatedEmitters = JSON.parse(emittersData);
@@ -644,7 +611,6 @@ function(SystemsManager, System, Emitter, Body, Path, Renderer, Util, Builder, e
 						emitters[i].pos.x = updatedEmitters[i].pos.x;
 						emitters[i].pos.y = updatedEmitters[i].pos.y;
 					}
-					//controller.flashConfig(true);
 				}, 200);
 			}
 

@@ -243,15 +243,15 @@ package com.axionfxbuilder
 				var actorList:Array;
 				if(actorType == 'emitter') {
 					actorList = emitters;
-					emitterIndicators[i].alpha = 1.0;
+					if(emitterIndicators[i]) emitterIndicators[i].alpha = 1.0;
 				} else if (actorType == 'body') {
 					actorList = bodies;
-					bodyIndicators[i].alpha = 1.0;
+					if(bodyIndicators[i]) bodyIndicators[i].alpha = 1.0;
 				} else if (actorType == 'path') {
 					actorList = paths;
 				}
 				if(activeActor == actorList[i]) return;
-				activeActor = actorList[i];
+				if(actorList[i]) activeActor = actorList[i];
 				if(renderer) renderer.addEventListener(DirectorEvent.updatePhaseEndEventType, updateSpline);
 			}
 
@@ -298,7 +298,6 @@ package com.axionfxbuilder
 			for(var x = 0; x < system.emitters.length; x++){
 				SystemsManager.getInstance().addSystem(system.emitters[x].systemName, 'EMITTER', system.emitters[x]);	
 				if(reload){
-					trace('system.emitters[x].textureSource ' + system.emitters[x].textureSource);
 					var sys:com.axionfx.System = new com.axionfx.System(system.emitters[x]);
 					var emitter:Emitter = new Emitter(sys);
 					emitter.addRenderer(renderer);

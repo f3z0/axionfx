@@ -3020,7 +3020,7 @@ dat.controllers.PositionListController = (function (Controller, dom, common) {
 
     var _this = this;
     this.addPoint = function(){
-      this.object[this.property].push({x: 20+(20*(-1+Math.random()*2)) , y: 20+(20*(-1+Math.random()*2))});
+      this.object[this.property].unshift({x: 20+(20*(-1+Math.random()*2)) , y: 20+(20*(-1+Math.random()*2))});
       this.init();
       this.setValue(this.object[this.property]);
     }
@@ -3145,7 +3145,7 @@ dat.controllers.PositionListController = (function (Controller, dom, common) {
                     var idx = parseInt(this.getAttribute('data-pos'));
                     var r = _this.getValue();
                     r.splice(idx,1);
-                    this.init();
+                    _this.init();
                     _this.setValue(r);
                   });
 
@@ -3168,7 +3168,6 @@ dat.controllers.PositionListController = (function (Controller, dom, common) {
                   common.extend(__inputXContainer.style, {
                     float: 'left',
                     width: '50px',
-                    marginRight: '10px'
                   });
 
                   common.extend(__inputX.style, {
@@ -3177,13 +3176,13 @@ dat.controllers.PositionListController = (function (Controller, dom, common) {
 
                   common.extend(__labelX.style, {
                     float: 'left',
-                    'marginRight': '10px',
+                    'marginRight': '5px',
                     color: '#838383'
                   });
 
                   common.extend(__labelY.style, {
                     float: 'left',
-                    'marginRight': '10px',
+                    'marginRight': '5px',
                     color: '#838383'
                   });
 
