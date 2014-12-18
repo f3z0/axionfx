@@ -416,8 +416,8 @@ function(SystemsManager, System, Emitter, Body, Path, Renderer, Util, Builder, e
 		}
 	};
 
-	window.flashHeight = 500;
-	window.flashWidth = 500;
+	window.flashHeight = 200;
+	window.flashWidth = 200;
 
 	var to;
 	Object.defineProperty(controller, 'canvasWidth', {

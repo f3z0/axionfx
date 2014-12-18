@@ -46,12 +46,9 @@ define([
             this._afterUpdate = [];
             this._afterRender = [];
     		if(typeof system === 'object') {
-                console.log('1 ' + system.systemName)
     			this._predefinedSystemName = system.systemName;
     			SystemsManager.getInstance().addSystem(this._predefinedSystemName, this.actorType, system);
                                 this._system = SystemsManager.getInstance().getSystem(this._predefinedSystemName);
-                                console.log('2 ' + this._system.systemName)
-
     		} else if (typeof system === 'string') {
     			this._predefinedSystemName = system;
     			this._system = SystemsManager.getInstance().getSystem(this._predefinedSystemName);
