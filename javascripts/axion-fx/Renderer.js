@@ -7,7 +7,9 @@ define(['axion-fx/DirectorEvent'],function(DirectorEvent) {
 	var _isPlaying = false;
 	var _actors = [];
 	var _rendererInstance;
-	
+	var lastTime;
+	var fps = 24/1000;
+
 	/**
 	 * Renderer - Holds the rendering of pixels to screen.
 	 *
@@ -22,6 +24,7 @@ define(['axion-fx/DirectorEvent'],function(DirectorEvent) {
 		_rendererInstance = this;
 
 		canvas = document.createElement('canvas');
+		canvas.id = "canvas-context";
 		canvas.width = width;
 		canvas.height = height;
 		context = canvas.getContext('2d');
@@ -76,6 +79,10 @@ define(['axion-fx/DirectorEvent'],function(DirectorEvent) {
 	function _render() {
 		var timestamp = (new Date()).getTime();
 		var delta = timestamp - (_lastTimestamp || timestamp);
+		if(delta < fps){
+			setTimeout(_render, 1000*(fps-delta));
+			return;
+		}
 		_lastTimestamp = timestamp;
 		delta /= 1000;
 		_elapsed += delta;
@@ -84,21 +91,38 @@ define(['axion-fx/DirectorEvent'],function(DirectorEvent) {
 
 		_rendererInstance.dispatchEvent(new DirectorEvent(DirectorEvent.updatePhaseStartEventType));
 		for(var i = 0; i < _actors.length; i++) {
-			_actors[i].update(_elapsed, delta);
+			_actors[i].update(_elapsed, (delta));
 			_actors[i].afterUpdate();
 		}
 		_rendererInstance.dispatchEvent(new DirectorEvent(DirectorEvent.updatePhaseEndEventType));
 		_rendererInstance.dispatchEvent(new DirectorEvent(DirectorEvent.renderPhaseStartEventType));
 		for(i = 0; i < _actors.length; i++) {
+
+			var c = document.getElementById('canvas-context');
+			var ctx=c.getContext("2d");
+			ctx.save();
+			ctx.scale(window.flashZoom,window.flashZoom);
 			if(_actors[i].renderable) _actors[i].render(context);
 			if(_actors[i].renderable) _actors[i].afterRender();
+			ctx.restore();
 		}
 		_rendererInstance.dispatchEvent(new DirectorEvent(DirectorEvent.renderPhaseEndEventType));
 		requestAnimationFrame(_render);
 	}
 
 	function _setupRequestAnimationFrame(){
-		window.requestAnimationFrame = window.requestAnimationFrame ||
+		// shim layer with setTimeout fallback
+		window.requestAnimFrame = (function(){
+		  return  window.requestAnimationFrame       ||
+		          window.webkitRequestAnimationFrame ||
+		          window.mozRequestAnimationFrame    ||
+		          function( callback ){
+		          	var to = fps-((new Date()).getTime()-(lastTime||(new Date()).getTime()));
+		            window.setTimeout(callback, to);
+		            lastTime = (new Date()).getTime();
+		          };
+		})();
+		/*window.requestAnimationFrame = window.requestAnimationFrame ||
 			window.mozRequestAnimationFrame ||
 			window.webkitRequestAnimationFrame ||
 			window.msRequestAnimationFrame ||
@@ -108,7 +132,8 @@ define(['axion-fx/DirectorEvent'],function(DirectorEvent) {
 			var lastTime = 0;
 			window.requestAnimationFrame = function(callback) {
 				var currTime = new Date().getTime();
-				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+				//var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+				var timeToCall = 1000/30;
 				var id = window.setTimeout(function() {
 					callback(currTime + timeToCall);
 				},
@@ -116,7 +141,8 @@ define(['axion-fx/DirectorEvent'],function(DirectorEvent) {
 				lastTime = currTime + timeToCall;
 				return id;
 			};
-		}
+
+		}*/
 	}
 
 	Object.defineProperty(Renderer.prototype, 'actors', {

@@ -224,16 +224,15 @@
 				}
 			}
 
-			var forceField = {x:1,y:1};
 
-			p.forces.x = (p.radial.x + p.tangential.x + gravity.x) + (p.vel.x * forceField.x);
-			p.forces.y = (p.radial.y + p.tangential.y + gravity.y) + (p.vel.y * forceField.y);
+			p.forces.x = (p.radial.x + p.tangential.x + gravity.x)
+			p.forces.y = (p.radial.y + p.tangential.y + gravity.y)
 
 			p.forces.x *= delta;
 			p.forces.y *= delta;
 
-			p.vel.x += p.forces.x;
-			p.vel.y += p.forces.y;
+			p.vel.x += p.forces.x ;
+			p.vel.y += p.forces.y ;
 			
 			p.pos.x += p.vel.x * delta;
 			p.pos.y += p.vel.y * delta;

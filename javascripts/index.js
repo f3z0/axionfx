@@ -40,6 +40,11 @@
        	$('#zoom-level span').html(window.flashZoom);
        	document.getElementById('flashemitter').externZoom(flashZoom);
 
+            
+            document.getElementById('canvas-context').width = window.flashWidth*window.flashZoom;
+            document.getElementById('canvas-context').height = window.flashHeight*window.flashZoom;
+
+
        	document.getElementById('canvasContainer').width = flashZoom*parseInt(window.flashWidth);
        	document.getElementById('canvasContainer').height = flashZoom*parseInt(window.flashHeight);
 

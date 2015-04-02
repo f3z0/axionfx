@@ -428,6 +428,7 @@ function(SystemsManager, System, Emitter, Body, Path, Renderer, Util, Builder, e
 			window.flashWidth = width;
 			document.getElementById('flashemitter-bg').style.width = (window.flashWidth*window.flashZoom) + 'px';
 			document.getElementById('flashemitter').width = window.flashWidth*window.flashZoom;
+			document.getElementById('canvas-context').width = window.flashWidth*window.flashZoom;
 			document.getElementById('flashemitter').externSize(window.flashWidth, window.flashHeight);
 			clearTimeout(to);
 			to = setTimeout(this.flashConfig, 250);
@@ -443,7 +444,8 @@ function(SystemsManager, System, Emitter, Body, Path, Renderer, Util, Builder, e
 			window.flashHeight = height;
 			document.getElementById('flashemitter-bg').style.height = (window.flashHeight*window.flashZoom) + 'px';
 			document.getElementById('flashemitter').height = window.flashHeight*window.flashZoom;
-			document.getElementById('flashemitter').externSize(window.flashWidth, window.flashHeight);
+			document.getElementById('canvas-context').height = window.flashHeight*window.flashZoom;
+			document.getElementById('flashemitter').externSize(window.flashHeight, window.flashHeight);
 			clearTimeout(to);
 			to = setTimeout(this.flashConfig, 250);
 			adjustSize();
