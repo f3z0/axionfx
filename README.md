@@ -1,3 +1,3 @@
 Particle effect system for flash/flex.
 
-DEMO: http://rawgit.com/coolblade/axionfx/master/index.html
+DEMO: http://f3z0.github.io/axionfx/
